@@ -1,0 +1,53 @@
+---
+title: "plotly"
+output: html_document
+date: "2024-02-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(palmerpenguins)
+library(plotly)
+```
+
+```{r}
+penguin_colors = c("darkorange","purple","cyan4")
+
+
+fig <- plot_ly(data = penguins, x = ~flipper_length_mm, y = ~bill_length_mm, type = "scatter", color = ~species, colors = penguin_colors)
+
+fig
+```
+
+```{r}
+# scatterplot with more customization
+fig <- plot_ly(data = penguins, x = ~flipper_length_mm, y = ~bill_length_mm, color = ~species, colors = penguin_colors,
+               mode = "markers", symbol = ~species, symbols = c("circle","triangle-up","square"), size = 10)
+
+fig
+
+```
+
+```{r}
+p <- ggplot(data = penguins,aes(x = flipper_length_mm, 
+                           y = bill_length_mm)) +
+  geom_point(aes(color = species, 
+                 shape = species,
+                 alpha = 0.8)) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  scale_alpha(guide = 'none') +
+  labs(title = "Flipper and bill length",
+       subtitle = "Dimensions for Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+       x = "Flipper length (mm)",
+       y = "Bill length (mm)",
+       color = "Penguin species",
+       shape = "Penguin species") +
+  theme_bw()
+
+ggplotly(p)
+```
+
